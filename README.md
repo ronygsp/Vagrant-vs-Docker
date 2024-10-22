@@ -49,12 +49,16 @@ We used **Vagrant** to create and manage both the virtual machine server and a c
    ```
    This builds the Docker image and runs the container to host the web server.
 
-2. **To Conduct the Load Test from the Client**:
+3. **Alternatively if its already built**
    ```sh
-   ./wrk -t2 -c100 -d180s http://[host-IP]:80
+   docker start nginx-host-container
    ```
-   Replace `[host-IP]` with the IP address of the host computer (e.g., `172.17.112.1`).
 
+3. **To Conduct the Load Test from the Client**:
+   ```sh
+   ./wrk -t2 -c100 -d180s http://172.17.112.1:80
+   ```
+   
 ---
 
 ## Analysis: Containers vs Virtual Machines
