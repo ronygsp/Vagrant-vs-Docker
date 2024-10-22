@@ -71,7 +71,7 @@ We used **Vagrant** to create and manage both the virtual machine server and a c
     - Test 2: **3100.22 requests/sec**
     - Test 3: **3066.09 requests/sec**
   - **Transfer Rate**:
-    - Test 1: **0.89MB/sec**
+    - Test 1: **911.36KB/sec**
     - Test 2: **811.24KB/sec**
     - Test 3: **802.31KB/sec**
 
@@ -88,25 +88,25 @@ We used **Vagrant** to create and manage both the virtual machine server and a c
 ### CPU and Memory Utilization Comparison:
 
 1. **Virtual Machine Server (Vagrant)**:
-   - **CPU Utilization**: The CPU usage stayed consistent at relatively **low percentages** throughout the load testing. It handled a moderate amount of requests but lacked the spikes and adaptability seen in Docker. It experienced higher latency as the load increased, indicating its slower response time.
-   - **Memory Utilization**: The memory usage was steady, generally using more resources than Docker due to the added overhead of running a full operating system.
+   - **CPU Utilization**: The CPU usage reached a significant peak of 91.9%, indicating that the VM struggled under load, resulting in increased CPU resource consumption. This indicates that under heavier loads, the virtual machine was less efficient at balancing resource utilization, likely because of the overhead of running a full operating system.
+   - **Memory Utilization**: Memory consumption was higher in the virtual machine (131MB out of 965MB), which is consistent with the overhead of maintaining an entire guest OS, leading to a more resource-heavy environment. The memory usage, though not fully saturated, indicates that running a complete OS can lead to higher baseline memory requirements.
 
 2. **Docker Container (Host)**:
-   - **CPU Utilization**: Docker containers exhibited **higher CPU usage**, with dynamic utilization that peaked during heavier loads. The **CPU usage reached 50-55%**, which indicates more efficient resource handling due to the reduced overhead.
-   - **Memory Utilization**: Docker's memory consumption was **lower** compared to the VM, making it a better option for environments where resources are limited. The containerized approach avoids the resource-heavy nature of running a complete guest OS.
-
+   - **CPU Utilization**: Docker exhibited moderate CPU usage across multiple worker processes, ranging from approximately 3% to 13% per worker. The container was efficient in balancing the workload across different CPU cores, and the CPU utilization was distributed evenly. This behavior shows Docker’s ability to dynamically manage resources, allowing it to efficiently utilize multiple CPU cores.
+   - **Memory Utilization**: Docker’s memory consumption was much lower (1.25GB out of 7.46GB), showing efficient resource usage compared to the VM. The lower memory usage is a direct result of Docker using the host operating system’s kernel, avoiding the additional overhead of a full virtual machine OS.
 ### Key Differences
 
 1. **Performance**:
-   - **Docker containers** were able to handle significantly more requests per second compared to the VM. This is because containers share the host’s OS, which eliminates the need for managing additional OS layers, reducing latency and resource consumption.
-   - In the **VM**, the latency increased with higher concurrent connections, leading to a less responsive environment under heavy loads.
+   - Docker containers were more efficient at managing CPU usage during high-load scenarios, distributing the workload across multiple worker processes. This led to better load handling and consistent CPU usage across cores.
+   - Virtual machines peaked at 91.9% CPU usage, showing that they struggled with resource management and had less efficient CPU handling compared to Docker. This behavior indicates that the overhead of running a full OS significantly impacts performance under load.
 
 2. **Efficiency**:
-   - The VM environment showed consistent resource usage but with increased **latency** and **lower throughput**. The **higher latency** in handling requests suggests that the virtual machine's overhead affects its efficiency.
-   - **Docker** was more resource-efficient, had faster startup times, and could handle a greater number of requests per second. It used **less memory** compared to the VM, showing that containers are well-suited for rapid scaling.
+   - The VM environment consumed more memory and peaked at high CPU usage, suggesting that its overhead led to less efficient performance compared to Docker.
+   - Docker containers showed lower memory usage, efficient CPU utilization, and managed worker processes better, indicating an optimized use of resources without the additional OS overhead.
 
 3. **Scalability**:
-   - **Docker containers** have advantages in environments requiring rapid scaling and quick startup, whereas virtual machines take longer to provision and are heavier in terms of resource use.
+   - Docker containers have an advantage in scalability due to their lower overhead and ability to utilize system resources more dynamically. They can handle workloads efficiently across multiple CPU cores and adjust resource allocation accordingly.
+   - Virtual machines, while offering better isolation, face challenges in scalability due to their resource-heavy nature, slower response to increased load, and high memory requirements.
 
 ### Conclusion
 
