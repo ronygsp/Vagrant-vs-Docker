@@ -18,7 +18,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"  # Lower memory allocation to 1GB
-    vb.cpus = 1         # Use 1 CPU core to reduce strain
     vb.gui = true  # Show the GUI so you can see the VM boot process
   end
 end
