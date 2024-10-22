@@ -1,0 +1,25 @@
+Vagrant.configure("2") do |config|
+  
+  # Base Ubuntu box
+  config.vm.box = "ubuntu/focal64"
+
+  # Define a hostname for the VM
+  config.vm.hostname = "client-vm"
+
+  # Configure network - make the server accessible to the client
+  config.vm.network "private_network", ip: "192.168.33.11"
+
+  # Provisioning - Install NGINX
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y build-essential libssl-dev git
+    git clone https://github.com/wg/wrk.git /home/vagrant/wrk
+    cd /home/vagrant/wrk && make
+  SHELL
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "1024"  # Lower memory allocation to 1GB
+    vb.cpus = 1         # Use 1 CPU core to reduce strain
+    vb.gui = true  # Show the GUI so you can see the VM boot process
+  end
+end
