@@ -56,7 +56,7 @@ We used **Vagrant** to create and manage both the virtual machine server and a c
 
 3. **To Conduct the Load Test from the Client**:
    ```sh
-   ./wrk -t2 -c100 -d180s http://172.17.112.1:80
+   ./wrk -t2 -c100 -d180s http://[Host_IP]:80
    ```
    
 ---
